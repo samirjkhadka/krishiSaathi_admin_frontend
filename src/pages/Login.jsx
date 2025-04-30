@@ -2,7 +2,16 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
-import {Container, Box, Typography, TextField, Button, CircularProgress, Alert, Paper} from '@mui/material';
+import {
+  Container,
+  Box,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Alert,
+  Paper,
+} from "@mui/material";
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -31,13 +40,14 @@ const Login = () => {
       localStorage.setItem("user", JSON.stringify(data.user));
       localStorage.setItem("user_Id", data.user.id);
 
-
       if (data.user.is_2fa_enabled) {
         navigate("/dashboard");
       } else {
         navigate("/setup-2fa");
       }
+      setLoading(false);
     } catch (err) {
+      setLoading(false);
       setError(err.response?.data?.message || "Login Failed");
     }
   };
@@ -101,27 +111,26 @@ const Login = () => {
         {error && <Alert severity="error">{error}</Alert>}
 
         <form onSubmit={handleSubmit}>
-        
-            <TextField
-              label="Username"
-              name="username"
-              margin="normal"
-              value={formData.username}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-         
-            <TextField
-              label="Password"
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleChange}
-              fullWidth
-              required
-            />
-         
+          <TextField
+            label="Username"
+            name="username"
+            margin="normal"
+            value={formData.username}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+
+          <TextField
+            label="Password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            fullWidth
+            required
+          />
+
           <Box sx={{ mt: 2 }}>
             <Button
               type="submit"
@@ -129,7 +138,7 @@ const Login = () => {
               disabled={loading}
               fullWidth
             >
-              {loading?<CircularProgress size={24}/>: "Login"}
+              {loading ? <CircularProgress size={24} /> : "Login"}
             </Button>
           </Box>
         </form>
